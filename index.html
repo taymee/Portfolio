@@ -95,19 +95,31 @@ section:not(#hero):not(#contact){padding:6rem 3rem}
 .filter-btn{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.45rem 1.1rem;border:1px solid var(--border);background:none;cursor:pointer;color:var(--gray);transition:all 0.25s;border-radius:2px;font-weight:300}
 .filter-btn.active{background:var(--lilac-dark);color:var(--white);border-color:var(--lilac-dark)}
 .filter-btn:hover:not(.active){border-color:var(--lilac);color:var(--lilac-dark)}
-.work-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5px;background:var(--border)}
-.work-card{background:var(--white);padding:2.5rem;cursor:pointer;transition:background 0.2s;position:relative;overflow:hidden}
+.work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:var(--border)}
+.work-card{background:var(--white);padding:2.5rem;cursor:pointer;transition:background 0.2s;position:relative;display:flex;flex-direction:column;min-height:280px}
 .work-card:hover{background:var(--lilac-soft)}
-.work-card .card-num{font-size:0.65rem;color:var(--lilac-dim);letter-spacing:0.1em;margin-bottom:1.8rem;font-weight:300}
-.work-card h3{font-size:1.2rem;font-weight:200;margin-bottom:0.6rem;line-height:1.3}
-.work-card p{font-size:0.82rem;color:var(--gray);line-height:1.6;margin-bottom:1.5rem;font-weight:300}
-.work-card .tag{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--lilac-dark);border:1px solid var(--lilac);padding:0.28rem 0.65rem;display:inline-block;border-radius:2px;font-weight:300}
+.work-card .card-num{font-size:0.65rem;color:var(--lilac-dim);letter-spacing:0.1em;margin-bottom:1.2rem;font-weight:300}
+.work-card h3{font-size:1.1rem;font-weight:300;margin-bottom:0.6rem;line-height:1.3}
+.work-card p{font-size:0.82rem;color:var(--gray);line-height:1.6;font-weight:300;flex:1;margin-bottom:1.5rem}
+.work-card .tag{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--lilac-dark);border:1px solid var(--lilac);padding:0.28rem 0.65rem;display:inline-block;border-radius:2px;font-weight:300;align-self:flex-start;margin-top:auto}
 .work-card .arrow{position:absolute;bottom:2.5rem;right:2.5rem;font-size:1.1rem;color:var(--lilac);opacity:0;transition:opacity 0.2s,transform 0.2s;transform:translate(-4px,4px)}
 .work-card:hover .arrow{opacity:1;transform:none}
 .work-card-soon{cursor:default;opacity:0.5}
 .work-card-soon:hover{background:var(--white)}
 .tag-soon{color:var(--gray)!important;border-color:var(--border)!important}
 .soon-badge{position:absolute;top:2.5rem;right:2.5rem;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--lilac-dim);border:1px solid var(--lilac);padding:0.25rem 0.65rem;border-radius:2px}
+
+/* GALLERY */
+#gallery{background:var(--black);padding:6rem 3rem}
+#gallery .section-label{color:#333}
+#gallery .section-label::after{background:#1a1a1a}
+.gallery-intro{font-size:0.9rem;color:#444;font-weight:300;line-height:1.7;max-width:480px;margin-bottom:3rem}
+.gallery-grid{columns:3;gap:1.5px;background:var(--border)}
+.gallery-item{break-inside:avoid;position:relative;overflow:hidden;cursor:pointer;display:block;margin-bottom:1.5px}
+.gallery-item img{width:100%;display:block;transition:transform 0.4s ease;filter:grayscale(20%)}
+.gallery-item:hover img{transform:scale(1.03);filter:grayscale(0%)}
+.gallery-item-placeholder{width:100%;background:#111;display:flex;align-items:center;justify-content:center;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:#333;font-weight:300}
+.gallery-upload-hint{margin-top:2rem;font-size:0.72rem;color:#333;letter-spacing:0.1em;font-style:italic}
 
 /* POUR */
 #pour{background:var(--white)}
@@ -220,7 +232,6 @@ footer .f-accent{color:var(--lilac)}
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#work">Work</a></li>
-    <li><a href="#pour">Pour</a></li>
     <li><a href="#stories">Stories</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -301,6 +312,14 @@ footer .f-accent{color:var(--lilac)}
     <button class="filter-btn" onclick="filterWork('philosophy',this)">Design Philosophy / Systems</button>
   </div>
   <div class="work-grid" id="work-grid"></div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-label"><span class="dot"></span>Fragments</div>
+  <p class="gallery-intro">Polished ideas, unused screens, and visual experiments from past projects — the work that didn't make the case study but still sparks something.</p>
+  <div class="gallery-grid" id="gallery-grid"></div>
+  <p class="gallery-upload-hint">Add your images to the /Images folder on GitHub named gallery-1.jpg, gallery-2.jpg etc.</p>
 </section>
 
 <!-- POUR -->
@@ -398,11 +417,11 @@ const books=[
 ];
 
 const works=[
-  {id:1,num:'01',title:'Screenless Design System',desc:'The foundational design language for Pai Enterprise — built for hardware-adjacent, screenless contexts.',tag:'philosophy',tagLabel:'Design Philosophy / Systems',problem:'Energy products operating at the edge of hardware needed a design system that could work without persistent screens.',process:'Led system architecture, component design, and documentation. Established verifiability as the core design philosophy.',outcome:'The active design system powering Pai Enterprise, continuously extended across all product features.'},
-  {id:2,num:'02',title:'Icon Library v0.1',desc:'IEC 60617 / IEEE 315 compliant icon library grounded in Suzanne Kare\'s iconography principles.',tag:'philosophy',tagLabel:'Design Philosophy / Systems',problem:'Power Canvas required a foundational icon library that was technically precise and visually coherent.',process:'Developed a work plan grounded in IEC 60617/IEEE 315 compliance, studying Kare\'s principles of immediate recognition.',outcome:'A prerequisite foundational system for Power Canvas, establishing the visual grammar for energy representation.'},
-  {id:3,num:'03',title:'Intelligent DCIM',desc:'Predictive intelligence interface for data centre infrastructure — PDU racks, cooling health, UPS battery, and generator diagnostics.',tag:'exploration',tagLabel:'Explorations / Product',problem:'Data centre operators lacked a unified, predictive view of critical infrastructure health.',process:'Led a React/TypeScript/Vite build covering state visualization, RUL modelling displays, and alert hierarchies — deployed to Vercel.',outcome:'A fully deployed monitoring application that surfaces predictive intelligence in a clear, operable interface.'},
-  {id:4,num:'04',title:'AI Powered HR Dashboard',desc:'An intelligent HR dashboard that surfaces workforce insights, flags anomalies, and accelerates people decisions.',tag:'exploration',tagLabel:'Explorations / Product',problem:'HR teams were buried in data across disconnected systems, making it hard to act on workforce signals in real time.',process:'Designed an AI-powered dashboard consolidating headcount, performance, and engagement signals — with natural language query and proactive insight surfaces.',outcome:'A unified decision-making interface that reduces time-to-insight for HR leads and people managers.'},
-  {id:5,num:'05',title:'Inventory Financing for Retailers',desc:'A financing product that helps retailers unlock working capital tied up in unsold inventory.',tag:'exploration',tagLabel:'Explorations / Product',problem:'Small and mid-size retailers face cash flow constraints when inventory doesn\'t move.',process:'Mapped the retailer financing journey end-to-end — from eligibility to disbursement — designing a lightweight, trust-building application flow.',outcome:'A product experience that makes inventory financing feel accessible and transparent for first-time credit users.'},
+  {id:1,num:'01',title:'Screenless Design System',desc:'A design language built for energy products that operate at the edge of hardware — where screens are absent, constrained, or secondary to physical interaction.',tag:'philosophy',tagLabel:'Design Philosophy / Systems',problem:'Pai Enterprise needed a coherent design foundation that could hold up in hardware-adjacent environments where traditional screen-first thinking breaks down.',process:'Led system architecture, component design, and documentation across the full Pai product suite. Established verifiability as the core design philosophy — every element traceable to a decision.',outcome:'The active design system powering Pai Enterprise, continuously extended across dispatch optimization, energy trading, and DCIM features.'},
+  {id:2,num:'02',title:'Icon Library v0.1',desc:'An IEC 60617 and IEEE 315 compliant icon library for Power Canvas — technically precise, semantically honest, built on Suzanne Kare\'s principles of immediate recognition.',tag:'philosophy',tagLabel:'Design Philosophy / Systems',problem:'Power Canvas required a visual grammar for energy systems that was both internationally compliant and immediately legible to operators and engineers.',process:'Developed a structured work plan grounded in IEC 60617/IEEE 315 standards, studying Kare\'s iconography principles to balance technical accuracy with intuitive recognition.',outcome:'A foundational icon system that gives Power Canvas a consistent visual language for representing energy infrastructure at every scale.'},
+  {id:3,num:'03',title:'Intelligent DCIM',desc:'A predictive intelligence interface for data centre operators — surfacing rack health, cooling states, UPS battery life, and generator diagnostics in one unified view.',tag:'exploration',tagLabel:'Explorations / Product',problem:'Data centre operators were managing critical infrastructure across disconnected systems, with no unified view of predictive health or failure risk.',process:'Led a full React/TypeScript/Vite build covering PDU rack state visualization, RUL modelling displays, cooling health indicators, and alert hierarchies — deployed to Vercel.',outcome:'A live monitoring application that replaces reactive firefighting with proactive intelligence, making infrastructure risk visible before it becomes an incident.'},
+  {id:4,num:'04',title:'AI Powered HR Dashboard',desc:'An intelligent people operations platform enabling seamless salary disbursements, remittances, and employee benefits across Africa.',tag:'exploration',tagLabel:'Explorations / Product',problem:'African businesses were managing payroll and benefits across fragmented, manual systems — creating delays, compliance gaps, and poor employee experiences.',process:'Designed an AI-powered dashboard consolidating payroll processing, remittance tracking, and benefits management with natural language query and proactive anomaly detection.',outcome:'A unified HR operations interface that reduces disbursement errors, accelerates payroll cycles, and makes employee benefits accessible across borders.'},
+  {id:5,num:'05',title:'Inventory Financing for Retailers',desc:'A working capital product that helps retailers and SMEs unlock financing against unsold inventory — removing the cash flow barrier to growth.',tag:'exploration',tagLabel:'Explorations / Product',problem:'Small retailers and SMEs across Nigeria carry significant value in unsold stock but can\'t access credit against it — leaving them unable to restock, expand, or survive slow seasons.',process:'Mapped the full financing journey from inventory valuation to disbursement, designing a trust-building application flow that made formal credit feel accessible for first-time borrowers.',outcome:'A product experience that treats inventory as collateral — giving retailers a clear, dignified path to working capital without the friction of traditional lending.'},
 ];
 
 const comingSoon={num:'06',title:'Hardware Design',desc:'Something is being crafted. Check back soon.',tag:'hardware',tagLabel:'Hardware Design'};
@@ -498,6 +517,23 @@ function renderStories(){
 }
 
 /* ── INTERACTIONS ── */
+function buildGallery(){
+  const grid=document.getElementById('gallery-grid');
+  if(!grid)return;
+  // Tries to load gallery-1.jpg through gallery-12.jpg from /Images folder
+  // Add your images to GitHub as gallery-1.jpg, gallery-2.jpg etc.
+  const heights=[240,320,280,360,260,300,340,260,300,280,320,240];
+  let html='';
+  for(let i=1;i<=12;i++){
+    html+=`<div class="gallery-item">
+      <img src="./Images/gallery-${i}.jpg" alt="Design fragment ${i}"
+        style="min-height:${heights[i-1]}px"
+        onerror="this.parentElement.style.display='none'">
+    </div>`;
+  }
+  grid.innerHTML=html;
+}
+
 function switchTab(id,btn){
   document.querySelectorAll('.pour-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.pour-panel').forEach(p=>p.classList.remove('active'));
@@ -590,6 +626,7 @@ document.addEventListener('mouseout',e=>{if(e.target.closest(hov)){cur.style.wid
 /* ── INIT ── */
 window.addEventListener('load',()=>{
   buildStack();
+  buildGallery();
   buildBookshelf();
   renderWork();
   renderStories();
